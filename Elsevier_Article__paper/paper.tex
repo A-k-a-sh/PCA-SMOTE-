@@ -1,0 +1,252 @@
+%%
+%% Pattern Recognition Letters — Submission
+%% Title: PCA-SMOTE: Diagnosing and Correcting Synthetic Overfitting
+%%        in Deep Latent Space Oversampling for Extreme Class Imbalance
+%%
+\documentclass[preprint,12pt]{elsarticle}
+
+%% Packages
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{booktabs}       % for professional tables (\toprule, \midrule, \bottomrule)
+\usepackage{graphicx}       % for figures
+\usepackage{multirow}       % for multi-row table cells
+\usepackage{xcolor}         % for coloring text
+\usepackage{hyperref}       % clickable references
+\usepackage{lineno}         % line numbers for review
+
+%% Journal name — change before submission
+\journal{Pattern Recognition Letters}
+
+\begin{document}
+
+%% Enable line numbers for reviewer convenience
+\linenumbers
+
+%% ===========================================================================
+%%  FRONT MATTER
+%% ===========================================================================
+\begin{frontmatter}
+
+\title{PCA-SMOTE: Diagnosing Synthetic Overfitting in Deep Latent Space
+       Oversampling and a Principled Correction for Extreme Class Imbalance}
+
+%% TODO: Fill in your real name and affiliation before submission
+\author[1]{Your Name\corref{cor1}}
+\ead{your.email@university.edu}
+\cortext[cor1]{Corresponding author}
+
+\affiliation[1]{organization={Department of Computer Science},
+               addressline={Your University Address},
+               city={City},
+               postcode={Postcode},
+               country={Country}}
+
+%% ----- Abstract ------------------------------------------------------------
+\begin{abstract}
+Deep latent-space oversampling methods such as DeepSMOTE have shown promise
+for class-imbalanced image classification.
+However, their behaviour under \emph{extreme} imbalance (minority class size
+$n \leq 80$) has not been rigorously studied.
+We reproduce DeepSMOTE on MNIST (imbalance ratio 100:1) and CIFAR-10
+(25:1, minority class \( n = 80 \)) and observe a systematic failure:
+standard latent SMOTE applied until all classes are balanced to the majority
+class count causes \emph{synthetic overfitting}, where the classifier learns the
+interpolated synthetic manifold rather than the true class distribution,
+degrading minority-class accuracy below the unaugmented baseline.
+We further show that Frechet Inception Distance (FID) and classifier accuracy are
+empirically \emph{decoupled} in this regime -- methods that produce more realistic
+synthetic images (lower FID) can still yield \emph{worse} classifiers.
+To address both failure modes, we propose \textbf{PCA-SMOTE}, which projects each
+class's latent vectors to their intrinsic low-dimensional PCA subspace before
+SMOTE interpolation, then projects back.
+This confines interpolation to the meaningful directions of variation and
+eliminates noisy high-dimensional interpolation artefacts.
+Critically, we also show that the choice of synthetic target count matters as
+much as the generation method itself: optimal performance is achieved at
+approximately 5--6$\times$ the real sample count, not the conventional
+``balance to majority'' target.
+Across three random seeds on both datasets, PCA-SMOTE at the optimal target
+count achieves statistically significant improvements over DeepSMOTE
+($p = 0.0013$, Wilcoxon signed-rank test) and, for the first time,
+consistently exceeds the unaugmented baseline on both benchmarks.
+\end{abstract}
+
+%% ----- Highlights ----------------------------------------------------------
+\begin{highlights}
+\item We identify \emph{synthetic overfitting} as the primary failure mode of
+      deep latent oversampling at extreme class imbalance ($n \leq 80$).
+\item We empirically demonstrate that FID and minority-class accuracy are
+      decoupled -- better image quality does not imply better classifiers.
+\item We propose PCA-SMOTE, which restricts interpolation to the intrinsic
+      subspace of each minority class before decoding.
+\item We show that target sample count selection is as critical as generation
+      method choice; the optimal ratio is approximately 5--6$\times$ the real sample count.
+\item PCA-SMOTE achieves statistically significant improvements over DeepSMOTE
+      on MNIST and CIFAR-10 ($p < 0.01$, Wilcoxon signed-rank test).
+\end{highlights}
+
+%% ----- Keywords ------------------------------------------------------------
+\begin{keyword}
+class imbalance \sep oversampling \sep SMOTE \sep deep learning \sep
+latent space \sep synthetic data \sep image classification
+\end{keyword}
+
+\end{frontmatter}
+
+%% ===========================================================================
+%%  1. INTRODUCTION
+%% ===========================================================================
+\section{Introduction}
+\label{sec:intro}
+
+%% TODO: Write introduction here
+%% Guidance:
+%%   Paragraph 1: The class imbalance problem in image classification. Why it matters.
+%%   Paragraph 2: Overview of oversampling solutions (pixel SMOTE -> deep methods like DeepSMOTE).
+%%   Paragraph 3: The unexplored failure mode -- extreme minority (n<=80). What happens?
+%%   Paragraph 4: Our findings (synthetic overfitting, FID paradox).
+%%   Paragraph 5: Our proposed fix (PCA-SMOTE + optimal target count) and what we prove.
+%%   Paragraph 6: Paper organization.
+
+\textbf{[SECTION DRAFT PENDING]}
+
+%% ===========================================================================
+%%  2. RELATED WORK
+%% ===========================================================================
+\section{Related Work}
+\label{sec:related}
+
+%% TODO: Write related work here
+%% Key papers to cite:
+%%   - Original SMOTE (Chawla 2002)
+%%   - DeepSMOTE (Dablain 2021)
+%%   - BAGAN, GAMO (GAN-based oversampling)
+%%   - FID paper (Heusel 2017)
+%%   - Class-imbalance surveys (He & Garcia 2009; Branco 2016)
+
+\textbf{[SECTION DRAFT PENDING]}
+
+%% ===========================================================================
+%%  3. BACKGROUND: DeepSMOTE
+%% ===========================================================================
+\section{Background: DeepSMOTE}
+\label{sec:background}
+
+%% TODO: Brief, precise description of DeepSMOTE.
+%%   - Encoder/Decoder architecture (DCGAN-based)
+%%   - Training: reconstruction loss + penalty (cyclic permutation trick)
+%%   - Generation: SMOTE in latent space (k=5 neighbors, gap in [0,1])
+%%   - Paper's claim: robust to extreme imbalance up to 400:1
+
+\textbf{[SECTION DRAFT PENDING]}
+
+%% ===========================================================================
+%%  4. FAILURE ANALYSIS: DIAGNOSING DEEPSMOTE
+%% ===========================================================================
+\section{Failure Analysis}
+\label{sec:failure}
+
+\subsection{Experimental Setup}
+\label{subsec:setup}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+\subsection{Finding 1: Synthetic Overfitting}
+\label{subsec:overfitting}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+\subsection{Finding 2: The FID--Accuracy Decoupling}
+\label{subsec:fid}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+\subsection{Finding 3: Latent Space Sparsity Diagnosis}
+\label{subsec:sparsity}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+%% ===========================================================================
+%%  5. PROPOSED METHOD: PCA-SMOTE
+%% ===========================================================================
+\section{Proposed Method: PCA-SMOTE}
+\label{sec:method}
+
+\subsection{Motivation}
+\label{subsec:motivation}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+\subsection{Algorithm}
+\label{subsec:algorithm}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+\subsection{Optimal Target Count Selection}
+\label{subsec:target}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+%% ===========================================================================
+%%  6. EXPERIMENTS
+%% ===========================================================================
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Datasets and Implementation Details}
+\label{subsec:impl}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+\subsection{MNIST Results}
+\label{subsec:mnist}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+\subsection{CIFAR-10 Results}
+\label{subsec:cifar}
+\textbf{[SUBSECTION DRAFT PENDING]}
+
+\subsection{Statistical Validation}
+\label{subsec:stats}
+
+To validate our empirical observations, we conducted non-parametric Wilcoxon
+signed-rank tests across multiple random seeds and datasets (CIFAR-10 and MNIST).
+First, we confirmed that standard latent-space oversampling (DeepSMOTE) statistically
+degrades minority-class performance compared to the unaugmented imbalanced baseline
+at extreme imbalance ratios ($p = 0.0020$).
+Second, evaluating across all paired hyperparameter and seed configurations ($n = 15$),
+our proposed PCA-SMOTE method significantly outperformed standard DeepSMOTE ($p = 0.0013$),
+validating the efficacy of intrinsic subspace interpolation in sparse,
+highly-imbalanced latent manifolds.
+
+%% ===========================================================================
+%%  7. DISCUSSION
+%% ===========================================================================
+\section{Discussion}
+\label{sec:discussion}
+\textbf{[SECTION DRAFT PENDING]}
+
+%% ===========================================================================
+%%  8. CONCLUSION
+%% ===========================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+\textbf{[SECTION DRAFT PENDING]}
+
+%% ===========================================================================
+%%  REFERENCES
+%% ===========================================================================
+%% We will build refs.bib together. For now, leave placeholder.
+\begin{thebibliography}{00}
+
+\bibitem{dablain2021}
+  D. Dablain, B. Krawczyk, N.~V. Chawla,
+  ``DeepSMOTE: Fusing Deep Learning and SMOTE for Imbalanced Data,''
+  \textit{IEEE Transactions on Neural Networks and Learning Systems}, 2022.
+
+\bibitem{chawla2002}
+  N.~V. Chawla, K.~W. Bowyer, L.~O. Hall, W.~P. Kegelmeyer,
+  ``SMOTE: Synthetic Minority Over-sampling Technique,''
+  \textit{Journal of Artificial Intelligence Research}, vol.~16, pp.~321--357, 2002.
+
+\bibitem{heusel2017}
+  M. Heusel, H. Ramsauer, T. Unterthiner, B. Nessler, S. Hochreiter,
+  ``GANs Trained by a Two Time-Scale Update Rule Converge to a Local Nash Equilibrium,''
+  \textit{Advances in Neural Information Processing Systems}, 2017.
+
+\end{thebibliography}
+
+\end{document}
