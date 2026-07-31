@@ -35,7 +35,7 @@
 \title{PCA-SMOTE: Diagnosing Synthetic Overfitting in Deep Latent Space
        Oversampling and a Principled Correction for Extreme Class Imbalance}
 
-%% TODO: Fill in your real name and affiliation before submission
+
 \author[1]{Shahad Abir\corref{cor1}}
 \ead{abirakash1987@gmail.com}
 \cortext[cor1]{Corresponding author}
@@ -60,13 +60,13 @@ Deep latent-space oversampling methods such as DeepSMOTE have shown promise
 for class-imbalanced image classification.
 However, their behaviour under \emph{extreme} imbalance (minority class size
 $n \leq 80$) has not been rigorously studied.
-We reproduce DeepSMOTE on MNIST (imbalance ratio 100:1) and CIFAR-10
-(25:1, minority class \( n = 80 \)) and observe a systematic failure:
+We reproduce DeepSMOTE on MNIST (imbalance ratio 100:1) and a 4-class
+subset of CIFAR-10 (25:1, minority class \( n = 80 \)) and observe a systematic failure:
 standard latent SMOTE applied until all classes are balanced to the majority
 class count causes \emph{synthetic overfitting}, where the classifier learns the
 interpolated synthetic manifold rather than the true class distribution,
 degrading minority-class accuracy below the unaugmented baseline.
-We further show that Frechet Inception Distance (FID) and classifier accuracy are
+We further show that Fr\'{e}chet Inception Distance (FID) and classifier accuracy are
 empirically \emph{decoupled} in this regime -- methods that produce more realistic
 synthetic images (lower FID) can still yield \emph{worse} classifiers.
 To address both failure modes, we propose \textbf{PCA-SMOTE}, which projects each
@@ -80,8 +80,8 @@ approximately 5--6$\times$ the real sample count, not the conventional
 ``balance to majority'' target.
 Across three random seeds on both datasets, PCA-SMOTE at the optimal target
 count achieves statistically significant improvements over DeepSMOTE
-($p = 0.0013$, Wilcoxon signed-rank test) and, for the first time,
-consistently exceeds the unaugmented baseline on both benchmarks.
+($p = 0.0013$, Wilcoxon signed-rank test) and achieves a higher mean
+accuracy than the unaugmented baseline on both benchmarks.
 \end{abstract}
 
 %% ----- Highlights ----------------------------------------------------------
@@ -146,7 +146,7 @@ DeepSMOTE \citep{dablain2022deepsmote} consists of a three-phase pipeline. First
 
 \subsection{Experimental Setup}
 \label{subsec:setup}
-To analyze the behaviour of latent-space oversampling under extreme imbalance, we reconstruct the DeepSMOTE \citep{dablain2022deepsmote} pipeline on two benchmark datasets: MNIST \citep{lecun1998gradient} and CIFAR-10 \citep{krizhevsky2009learning}. For MNIST, we establish a 100:1 imbalance ratio, reducing the minority class (Digit 9) to $n=40$ samples. For CIFAR-10, we reduce the ``Airplane'' class to $n=80$ samples (a 25:1 ratio against the majority class of $n=2000$). We train the identical autoencoder architecture specified by the original authors (a DCGAN-based topology \citep{radford2015unsupervised}) until convergence. Figure \ref{fig:tsne} visualizes the resulting 600-dimensional latent spaces projected via t-SNE \citep{vandermaaten2008tsne}. While the majority classes form dense, well-defined clusters, the extreme minority classes are sparse and fractured, setting the stage for our failure analysis.
+To analyze the behaviour of latent-space oversampling under extreme imbalance, we reconstruct the DeepSMOTE \citep{dablain2022deepsmote} pipeline on two benchmark datasets: MNIST \citep{lecun1998gradient} and a 4-class subset of CIFAR-10 \citep{krizhevsky2009learning} (Ship, Dog, Bird, Airplane). For MNIST, we establish a 100:1 imbalance ratio, reducing the minority class (Digit 9) to $n=40$ samples. For CIFAR-10, we reduce the ``Airplane'' class to $n=80$ samples (a 25:1 ratio against the majority class of $n=2000$). We select a 4-class subset to isolate the effect of extreme minority imbalance on a controlled classification task. We train the identical autoencoder architecture specified by the original authors (a DCGAN-based topology \citep{radford2015unsupervised}) until convergence. Figure \ref{fig:tsne} visualizes the resulting 600-dimensional latent spaces projected via t-SNE \citep{vandermaaten2008tsne}. While the majority classes form dense, well-defined clusters, the extreme minority classes are sparse and fractured, setting the stage for our failure analysis.
 
 \begin{figure}[htbp]
     \centering
@@ -166,7 +166,7 @@ We term this phenomenon \emph{synthetic overfitting}. Because the extreme minori
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{fig1_target_sweep}
+    \includegraphics[width=\linewidth]{figures/fig1_target_sweep.png}
     \caption{Target sweep for minority class generation on MNIST (left) and CIFAR-10 (right). DeepSMOTE performance peaks at a low synthetic ratio (approx. $5\times$ real samples) and degrades sharply as it approaches the full balance target, demonstrating synthetic overfitting.}
     \label{fig:target_sweep}
 \end{figure}
@@ -249,7 +249,7 @@ Instead, our empirical results across both MNIST and CIFAR-10 suggest a new heur
 
 \subsection{Datasets and Implementation Details}
 \label{subsec:impl}
-We evaluate our approach on two image classification benchmarks: MNIST \citep{lecun1998gradient} and CIFAR-10 \citep{krizhevsky2009learning}. While previous works evaluated DeepSMOTE under moderate absolute minority counts (e.g., $n \ge 400$), we establish an extreme imbalance regime to stress-test the latent manifold. For MNIST, we use a 100:1 imbalance ratio, reducing Class 9 to $n=40$ samples. For CIFAR-10, we establish a 25:1 ratio, reducing the Airplane class to $n=80$ samples. 
+We evaluate our approach on two image classification benchmarks: MNIST \citep{lecun1998gradient} and a 4-class subset of CIFAR-10 \citep{krizhevsky2009learning} (Ship, Dog, Bird, Airplane). While previous works evaluated DeepSMOTE under moderate absolute minority counts (e.g., $n \ge 400$), we establish an extreme imbalance regime to stress-test the latent manifold. For MNIST, we use a 100:1 imbalance ratio, reducing Class 9 to $n=40$ samples. For CIFAR-10, we establish a 25:1 ratio, reducing the Airplane class to $n=80$ samples. 
 
 For downstream classification, we intentionally train a lightweight Convolutional Neural Network (SmallCNN) \citep{lecun1989backpropagation} from scratch using the Adam optimizer \citep{kingma2014adam}. This isolates the direct impact of the synthetic oversampling distribution and avoids confounding variables introduced by heavy architectures (like ResNet-18 \citep{krizhevsky2012imagenet}) or ImageNet pre-training priors. Because global metrics like overall accuracy are insensitive to extreme minority classes, we report the absolute classification accuracy of the target minority class. All experiments are independently repeated across three random seeds (10, 20, and 60) to ensure statistical robustness.
 
@@ -342,7 +342,7 @@ In this paper, we evaluated deep latent-space oversampling techniques under cond
 %% ===========================================================================
 %%  REFERENCES
 %% ===========================================================================
-%% We will build refs.bib together. For now, leave placeholder.
+
 \bibliographystyle{elsarticle-num}
 \bibliography{refs}
 
