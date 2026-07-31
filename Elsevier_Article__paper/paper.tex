@@ -3,7 +3,7 @@
 %% Title: PCA-SMOTE: Diagnosing and Correcting Synthetic Overfitting
 %%        in Deep Latent Space Oversampling for Extreme Class Imbalance
 %%
-\documentclass[preprint,12pt]{elsarticle}
+\documentclass[5p,times]{elsarticle}
 
 %% Packages
 \usepackage{amssymb}
@@ -76,18 +76,19 @@ consistently exceeds the unaugmented baseline on both benchmarks.
 \end{abstract}
 
 %% ----- Highlights ----------------------------------------------------------
-\begin{highlights}
-\item We identify \emph{synthetic overfitting} as the primary failure mode of
-      deep latent oversampling at extreme class imbalance ($n \leq 80$).
-\item We empirically demonstrate that FID and minority-class accuracy are
-      decoupled -- better image quality does not imply better classifiers.
-\item We propose PCA-SMOTE, which restricts interpolation to the intrinsic
-      subspace of each minority class before decoding.
-\item We show that target sample count selection is as critical as generation
-      method choice; the optimal ratio is approximately 5--6$\times$ the real sample count.
-\item PCA-SMOTE achieves statistically significant improvements over DeepSMOTE
-      on MNIST and CIFAR-10 ($p < 0.01$, Wilcoxon signed-rank test).
-\end{highlights}
+%% (Highlights are often submitted as a separate file. Commented out for the main PDF)
+% \begin{highlights}
+% \item We identify \emph{synthetic overfitting} as the primary failure mode of
+%       deep latent oversampling at extreme class imbalance ($n \leq 80$).
+% \item We empirically demonstrate that FID and minority-class accuracy are
+%       decoupled -- better image quality does not imply better classifiers.
+% \item We propose PCA-SMOTE, which restricts interpolation to the intrinsic
+%       subspace of each minority class before decoding.
+% \item We show that target sample count selection is as critical as generation
+%       method choice; the optimal ratio is approximately 5--6$\times$ the real sample count.
+% \item PCA-SMOTE achieves statistically significant improvements over DeepSMOTE
+%       on MNIST and CIFAR-10 ($p < 0.01$, Wilcoxon signed-rank test).
+% \end{highlights}
 
 %% ----- Keywords ------------------------------------------------------------
 \begin{keyword}
@@ -235,7 +236,9 @@ Instead, our empirical results across both MNIST and CIFAR-10 suggest a new heur
 
 \subsection{Datasets and Implementation Details}
 \label{subsec:impl}
-We evaluate our approach on two image classification benchmarks: MNIST and CIFAR-10. For MNIST, we use a 100:1 imbalance ratio where Class 9 is reduced to 40 samples (vs. 4000 for the majority class). For CIFAR-10, we establish a 25:1 ratio, reducing the Airplane class to 80 samples (vs. 2000 for the majority class). For downstream classification, we train a lightweight Convolutional Neural Network (SmallCNN) from scratch using the Adam optimizer with Cosine Annealing over 50 epochs. Because global metrics like overall accuracy are insensitive to extreme minority classes, we report the absolute classification accuracy of the target minority class. All experiments are independently repeated across three random seeds (10, 20, and 60) to ensure robustness against initialization artifacts.
+We evaluate our approach on two image classification benchmarks: MNIST and CIFAR-10. While previous works evaluated DeepSMOTE under moderate absolute minority counts (e.g., $n \ge 400$), we establish an extreme imbalance regime to stress-test the latent manifold. For MNIST, we use a 100:1 imbalance ratio, reducing Class 9 to $n=40$ samples. For CIFAR-10, we establish a 25:1 ratio, reducing the Airplane class to $n=80$ samples. 
+
+For downstream classification, we intentionally train a lightweight Convolutional Neural Network (SmallCNN) from scratch. This isolates the direct impact of the synthetic oversampling distribution and avoids confounding variables introduced by heavy architectures (like ResNet-18) or ImageNet pre-training priors. Because global metrics like overall accuracy are insensitive to extreme minority classes, we report the absolute classification accuracy of the target minority class. All experiments are independently repeated across three random seeds (10, 20, and 60) to ensure statistical robustness.
 
 \subsection{MNIST Results}
 \label{subsec:mnist}
