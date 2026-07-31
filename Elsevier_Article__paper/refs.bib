@@ -1,0 +1,375 @@
+%% ============================================================
+%% pca_smote_references.bib
+%% Full reference list for:
+%%   "PCA-SMOTE: Diagnosing Synthetic Overfitting in Deep Latent
+%%    Space Oversampling and a Principled Correction for Extreme
+%%    Class Imbalance"
+%%
+%% Covers every method, dataset, and concept cited in the paper.
+%% Organized by section of first appearance.
+%% ============================================================
+
+
+%% ------------------------------------------------------------------
+%% [1]  CORE METHOD REFERENCES  (directly cited as [1],[2],[3])
+%% ------------------------------------------------------------------
+
+@article{dablain2022deepsmote,
+  title     = {{DeepSMOTE}: Fusing Deep Learning and {SMOTE} for Imbalanced Data},
+  author    = {Dablain, Damien and Krawczyk, Bartosz and Chawla, Nitesh V.},
+  journal   = {IEEE Transactions on Neural Networks and Learning Systems},
+  volume    = {34},
+  number    = {9},
+  pages     = {6390--6404},
+  year      = {2022},
+  doi       = {10.1109/TNNLS.2021.3136503}
+}
+
+@article{chawla2002smote,
+  title     = {{SMOTE}: Synthetic Minority Over-sampling Technique},
+  author    = {Chawla, Nitesh V. and Bowyer, Kevin W. and Hall, Lawrence O. and Kegelmeyer, W. Philip},
+  journal   = {Journal of Artificial Intelligence Research},
+  volume    = {16},
+  pages     = {321--357},
+  year      = {2002},
+  doi       = {10.1613/jair.953}
+}
+
+@inproceedings{heusel2017gans,
+  title     = {{GAN}s Trained by a Two Time-Scale Update Rule Converge to a Local {Nash} Equilibrium},
+  author    = {Heusel, Martin and Ramsauer, Hubert and Unterthiner, Thomas and Nessler, Bernhard and Hochreiter, Sepp},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {30},
+  pages     = {6626--6637},
+  year      = {2017}
+}
+
+
+%% ------------------------------------------------------------------
+%% DATASETS
+%% ------------------------------------------------------------------
+
+@article{lecun1998gradient,
+  title     = {Gradient-Based Learning Applied to Document Recognition},
+  author    = {LeCun, Yann and Bottou, L{\'e}on and Bengio, Yoshua and Haffner, Patrick},
+  journal   = {Proceedings of the IEEE},
+  volume    = {86},
+  number    = {11},
+  pages     = {2278--2324},
+  year      = {1998},
+  doi       = {10.1109/5.726791}
+}
+
+@techreport{krizhevsky2009learning,
+  title       = {Learning Multiple Layers of Features from Tiny Images},
+  author      = {Krizhevsky, Alex and Hinton, Geoffrey},
+  institution = {University of Toronto},
+  year        = {2009},
+  url         = {https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf}
+}
+
+
+%% ------------------------------------------------------------------
+%% GENERATIVE ADVERSARIAL NETWORKS FOR CLASS IMBALANCE
+%% (mentioned in Related Work: BAGAN, GAMO, and GAN foundations)
+%% ------------------------------------------------------------------
+
+@article{mariani2018bagan,
+  title         = {{BAGAN}: Data Augmentation with Balancing {GAN}},
+  author        = {Mariani, Giovanni and Scheidegger, Florian and Istrate, Roxana and Bekas, Costas and Malossi, A. Cristiano I.},
+  journal       = {arXiv preprint arXiv:1803.09655},
+  year          = {2018},
+  url           = {https://arxiv.org/abs/1803.09655}
+}
+
+@inproceedings{mullick2019gamo,
+  title     = {Generative Adversarial Minority Oversampling},
+  author    = {Mullick, Sankha Subhra and Datta, Shounak and Das, Swagatam},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  pages     = {1695--1704},
+  month     = {October},
+  year      = {2019}
+}
+
+@inproceedings{goodfellow2014generative,
+  title     = {Generative Adversarial Nets},
+  author    = {Goodfellow, Ian and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {27},
+  pages     = {2672--2680},
+  year      = {2014}
+}
+
+
+%% ------------------------------------------------------------------
+%% AUTOENCODER / DEEP GENERATIVE MODEL BACKBONE
+%% (DCGAN architecture used inside DeepSMOTE)
+%% ------------------------------------------------------------------
+
+@article{radford2015unsupervised,
+  title         = {Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks},
+  author        = {Radford, Alec and Metz, Luke and Chintala, Soumith},
+  journal       = {arXiv preprint arXiv:1511.06434},
+  year          = {2015},
+  url           = {https://arxiv.org/abs/1511.06434}
+}
+
+
+%% ------------------------------------------------------------------
+%% DIMENSIONALITY REDUCTION
+%% (t-SNE used for latent space visualization; UMAP mentioned as future work)
+%% ------------------------------------------------------------------
+
+@article{vandermaaten2008tsne,
+  title   = {Visualizing Data using {t-SNE}},
+  author  = {van der Maaten, Laurens and Hinton, Geoffrey},
+  journal = {Journal of Machine Learning Research},
+  volume  = {9},
+  pages   = {2579--2605},
+  year    = {2008},
+  url     = {http://www.jmlr.org/papers/v9/vandermaaten08a.html}
+}
+
+@article{mcinnes2018umap,
+  title         = {{UMAP}: Uniform Manifold Approximation and Projection for Dimension Reduction},
+  author        = {McInnes, Leland and Healy, John and Melville, James},
+  journal       = {arXiv preprint arXiv:1802.03426},
+  year          = {2018},
+  doi           = {10.48550/arXiv.1802.03426}
+}
+
+@article{pearson1901pca,
+  title   = {On Lines and Planes of Closest Fit to Systems of Points in Space},
+  author  = {Pearson, Karl},
+  journal = {The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science},
+  volume  = {2},
+  number  = {11},
+  pages   = {559--572},
+  year    = {1901},
+  doi     = {10.1080/14786440109462720}
+}
+
+
+%% ------------------------------------------------------------------
+%% STATISTICAL VALIDATION
+%% ------------------------------------------------------------------
+
+@article{wilcoxon1945individual,
+  title   = {Individual Comparisons by Ranking Methods},
+  author  = {Wilcoxon, Frank},
+  journal = {Biometrics Bulletin},
+  volume  = {1},
+  number  = {6},
+  pages   = {80--83},
+  year    = {1945},
+  doi     = {10.2307/3001968}
+}
+
+
+%% ------------------------------------------------------------------
+%% CLASS IMBALANCE — SURVEYS AND FOUNDATIONAL WORK
+%% ------------------------------------------------------------------
+
+@article{he2009learning,
+  title   = {Learning from Imbalanced Data},
+  author  = {He, Haibo and Garcia, Edwardo A.},
+  journal = {IEEE Transactions on Knowledge and Data Engineering},
+  volume  = {21},
+  number  = {9},
+  pages   = {1263--1284},
+  year    = {2009},
+  doi     = {10.1109/TKDE.2008.239}
+}
+
+@article{haixiang2017learning,
+  title   = {Learning from Class-Imbalanced Data: Review of Methods and Applications},
+  author  = {Haixiang, Guo and Yijing, Li and Shang, Jennifer and Mingyun, Gu and Yuanyue, Huang and Bing, Gong},
+  journal = {Expert Systems with Applications},
+  volume  = {73},
+  pages   = {220--239},
+  year    = {2017},
+  doi     = {10.1016/j.eswa.2016.12.035}
+}
+
+@article{buda2018systematic,
+  title   = {A Systematic Study of the Class Imbalance Problem in Convolutional Neural Networks},
+  author  = {Buda, Mateusz and Maki, Atsuto and Mazurowski, Maciej A.},
+  journal = {Neural Networks},
+  volume  = {106},
+  pages   = {249--259},
+  year    = {2018},
+  doi     = {10.1016/j.neunet.2018.07.011}
+}
+
+@article{johnson2019survey,
+  title   = {Survey on Deep Learning with Class Imbalance},
+  author  = {Johnson, Justin M. and Khoshgoftaar, Taghi M.},
+  journal = {Journal of Big Data},
+  volume  = {6},
+  number  = {1},
+  pages   = {27},
+  year    = {2019},
+  doi     = {10.1186/s40537-019-0192-5}
+}
+
+
+%% ------------------------------------------------------------------
+%% SMOTE VARIANTS AND EXTENSIONS
+%% ------------------------------------------------------------------
+
+@inproceedings{han2005borderline,
+  title     = {Borderline-{SMOTE}: A New Over-Sampling Method in Imbalanced Data Sets Learning},
+  author    = {Han, Hui and Wang, Wen-Yuan and Mao, Bing-Huan},
+  booktitle = {International Conference on Intelligent Computing},
+  pages     = {878--887},
+  year      = {2005},
+  publisher = {Springer}
+}
+
+@inproceedings{he2008adasyn,
+  title     = {{ADASYN}: Adaptive Synthetic Sampling Approach for Imbalanced Learning},
+  author    = {He, Haibo and Bai, Yang and Garcia, Edwardo A. and Li, Shutao},
+  booktitle = {IEEE International Joint Conference on Neural Networks (IJCNN)},
+  pages     = {1322--1328},
+  year      = {2008},
+  doi       = {10.1109/IJCNN.2008.4633969}
+}
+
+@inproceedings{chawla2003smoteboost,
+  title     = {{SMOTEBoost}: Improving Prediction of the Minority Class in Boosting},
+  author    = {Chawla, Nitesh V. and Lazarevic, Aleksandar and Hall, Lawrence O. and Bowyer, Kevin W.},
+  booktitle = {European Conference on Principles of Data Mining and Knowledge Discovery},
+  pages     = {107--119},
+  year      = {2003},
+  publisher = {Springer}
+}
+
+
+%% ------------------------------------------------------------------
+%% LATENT SPACE / DEEP OVERSAMPLING METHODS
+%% ------------------------------------------------------------------
+
+@inproceedings{ando2017deep,
+  title     = {Deep Over-Sampling Framework for Classifying Imbalanced Data},
+  author    = {Ando, Shin and Huang, Chun Yuan},
+  booktitle = {Lecture Notes in Computer Science (ECML-PKDD)},
+  volume    = {10534},
+  year      = {2017},
+  doi       = {10.1007/978-3-319-71249-9_46}
+}
+
+
+%% ------------------------------------------------------------------
+%% NEAREST-NEIGHBOR AND MANIFOLD LEARNING FOUNDATIONS
+%% ------------------------------------------------------------------
+
+@article{cover1967nearest,
+  title   = {Nearest Neighbor Pattern Classification},
+  author  = {Cover, Thomas and Hart, Peter},
+  journal = {IEEE Transactions on Information Theory},
+  volume  = {13},
+  number  = {1},
+  pages   = {21--27},
+  year    = {1967},
+  doi     = {10.1109/TIT.1967.1053964}
+}
+
+@article{bellman1957dynamic,
+  title     = {Dynamic Programming},
+  author    = {Bellman, Richard},
+  publisher = {Princeton University Press},
+  year      = {1957}
+}
+
+
+%% ------------------------------------------------------------------
+%% IMAGE QUALITY / EVALUATION METRICS
+%% ------------------------------------------------------------------
+
+@inproceedings{szegedy2016rethinking,
+  title     = {Rethinking the {Inception} Architecture for Computer Vision},
+  author    = {Szegedy, Christian and Vanhoucke, Vincent and Ioffe, Sergey and Shlens, Jon and Wojna, Zbigniew},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages     = {2818--2826},
+  year      = {2016},
+  doi       = {10.1109/CVPR.2016.308}
+}
+
+
+%% ------------------------------------------------------------------
+%% CONVOLUTIONAL NEURAL NETWORKS (SmallCNN / classifier backbone)
+%% ------------------------------------------------------------------
+
+@article{lecun1989backpropagation,
+  title   = {Backpropagation Applied to Handwritten Zip Code Recognition},
+  author  = {LeCun, Yann and Boser, Bernhard and Denker, John S. and Henderson, Donnie and Howard, Richard E. and Hubbard, Wayne and Jackel, Lawrence D.},
+  journal = {Neural Computation},
+  volume  = {1},
+  number  = {4},
+  pages   = {541--551},
+  year    = {1989},
+  doi     = {10.1162/neco.1989.1.4.541}
+}
+
+@inproceedings{krizhevsky2012imagenet,
+  title     = {{ImageNet} Classification with Deep Convolutional Neural Networks},
+  author    = {Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E.},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {25},
+  pages     = {1097--1105},
+  year      = {2012}
+}
+
+
+%% ------------------------------------------------------------------
+%% OPTIMIZATION / TRAINING
+%% ------------------------------------------------------------------
+
+@article{kingma2014adam,
+  title         = {Adam: A Method for Stochastic Optimization},
+  author        = {Kingma, Diederik P. and Ba, Jimmy},
+  journal       = {arXiv preprint arXiv:1412.6980},
+  year          = {2014},
+  url           = {https://arxiv.org/abs/1412.6980}
+}
+
+@inproceedings{srivastava2014dropout,
+  title   = {Dropout: A Simple Way to Prevent Neural Networks from Overfitting},
+  author  = {Srivastava, Nitish and Hinton, Geoffrey and Krizhevsky, Alex and Sutskever, Ilya and Salakhutdinov, Ruslan},
+  journal = {Journal of Machine Learning Research},
+  volume  = {15},
+  number  = {56},
+  pages   = {1929--1958},
+  year    = {2014}
+}
+
+
+%% ------------------------------------------------------------------
+%% SCIENTIFIC PYTHON STACK  (used for experiments)
+%% ------------------------------------------------------------------
+
+@article{pedregosa2011scikit,
+  title   = {Scikit-learn: Machine Learning in {Python}},
+  author  = {Pedregosa, Fabian and Varoquaux, Ga{\"e}l and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier and Blondel, Mathieu and Prettenhofer, Peter and Weiss, Ron and Dubourg, Vincent and others},
+  journal = {Journal of Machine Learning Research},
+  volume  = {12},
+  pages   = {2825--2830},
+  year    = {2011}
+}
+
+@article{virtanen2020scipy,
+  title   = {{SciPy} 1.0: Fundamental Algorithms for Scientific Computing in {Python}},
+  author  = {Virtanen, Pauli and Gommers, Ralf and Oliphant, Travis E. and Haberland, Matt and Reddy, Tyler and Cournapeau, David and Burovski, Evgeni and Peterson, Pearu and Weckesner, Warren and Bright, Jonathan and others},
+  journal = {Nature Methods},
+  volume  = {17},
+  pages   = {261--272},
+  year    = {2020},
+  doi     = {10.1038/s41592-020-0772-5}
+}
+
+@software{paszke2019pytorch,
+  title  = {{PyTorch}: An Imperative Style, High-Performance Deep Learning Library},
+  author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and others},
+  year   = {2019},
+  url    = {https://arxiv.org/abs/1912.01703}
+}
