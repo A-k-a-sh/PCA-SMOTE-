@@ -125,7 +125,7 @@ Latent-space oversampling methods bypass GAN instability by utilizing determinis
 %% ===========================================================================
 \section{Background: DeepSMOTE}
 \label{sec:background}
-DeepSMOTE \citep{dablain2021} consists of a three-phase pipeline. First, an encoder-decoder architecture is trained on the imbalanced dataset. The network uses a reconstruction loss alongside a cyclic permutation penalty term that forces the embeddings of samples from the same class closer together. Second, the trained encoder projects the minority class images into a high-dimensional continuous latent space (e.g., $d=600$). For each minority latent vector, standard SMOTE selects a neighbor from its $k=5$ nearest neighbors and generates a synthetic vector via linear interpolation with a gap coefficient $\lambda \sim \mathcal{U}(0, 1)$. Finally, these synthetic latent vectors are passed through the frozen decoder to generate synthetic minority images, which are combined with the real data to train a classifier.
+DeepSMOTE \citep{dablain2021} consists of a three-phase pipeline. First, an encoder-decoder architecture is trained on the imbalanced dataset. The network uses a reconstruction loss alongside a cyclic permutation penalty term to force intra-class embeddings closer together. Second, the trained encoder projects the minority class images into a high-dimensional continuous latent space. For each minority latent vector, standard SMOTE selects a neighbor from its $k=5$ nearest neighbors and generates a synthetic vector via linear interpolation with a gap coefficient $\lambda$ drawn from $\mathcal{U}(0, 1)$. Finally, these synthetic latent vectors are passed through the frozen decoder to generate synthetic minority images, which are combined with the real data to train a classifier.
 
 %% ===========================================================================
 %%  4. FAILURE ANALYSIS: DIAGNOSING DEEPSMOTE
@@ -170,6 +170,7 @@ As detailed in Table \ref{tab:fid_paradox}, DeepSMOTE produces visually superior
     \centering
     \caption{The FID--Accuracy Decoupling (MNIST Class 9, Seed 10). A lower FID implies more realistic images, yet it corresponds to a worse downstream classifier.}
     \label{tab:fid_paradox}
+    \resizebox{\columnwidth}{!}{
     \begin{tabular}{lcc}
         \toprule
         \textbf{Method} & \textbf{Image Quality (FID $\downarrow$)} & \textbf{Classifier Utility (Acc. $\uparrow$)} \\
@@ -178,6 +179,7 @@ As detailed in Table \ref{tab:fid_paradox}, DeepSMOTE produces visually superior
         PCA-SMOTE (Ours) & 32.2 & \textbf{85.6\%} \\
         \bottomrule
     \end{tabular}
+    }
 \end{table}
 
 \subsection{Finding 3: Latent Space Sparsity Diagnosis}
@@ -250,6 +252,7 @@ Applying PCA-SMOTE while maintaining the full balance target ($T=4000$) partiall
     \centering
     \caption{MNIST minority class (Digit 9) accuracy (\%) across three random seeds.}
     \label{tab:mnist_results}
+    \resizebox{\columnwidth}{!}{
     \begin{tabular}{lcccc}
         \toprule
         \textbf{Method} & \textbf{Seed 10} & \textbf{Seed 20} & \textbf{Seed 60} & \textbf{Mean} \\
@@ -260,6 +263,7 @@ Applying PCA-SMOTE while maintaining the full balance target ($T=4000$) partiall
         \textbf{PCA-SMOTE (optimal target)} & \textbf{88.9} & \textbf{88.9} & \textbf{88.6} & \textbf{88.8} \\
         \bottomrule
     \end{tabular}
+    }
 \end{table}
 
 \subsection{CIFAR-10 Results}
@@ -272,6 +276,7 @@ Figure \ref{fig:real_vs_synth} illustrates this qualitatively: DeepSMOTE generat
     \centering
     \caption{CIFAR-10 minority class (Airplane) accuracy (\%) across three random seeds.}
     \label{tab:cifar_results}
+    \resizebox{\columnwidth}{!}{
     \begin{tabular}{lcccc}
         \toprule
         \textbf{Method} & \textbf{Seed 10} & \textbf{Seed 20} & \textbf{Seed 60} & \textbf{Mean} \\
@@ -282,6 +287,7 @@ Figure \ref{fig:real_vs_synth} illustrates this qualitatively: DeepSMOTE generat
         \textbf{PCA-SMOTE (optimal target)} & 22.2 & \textbf{25.1} & \textbf{26.9} & \textbf{24.7} \\
         \bottomrule
     \end{tabular}
+    }
 \end{table}
 
 \begin{figure}[htbp]
