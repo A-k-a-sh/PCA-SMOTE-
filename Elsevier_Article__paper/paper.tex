@@ -340,6 +340,12 @@ PCA-SMOTE solves this by recognizing that the \emph{intrinsic} dimensionality of
 In this paper, we evaluated deep latent-space oversampling techniques under conditions of extreme class imbalance ($n \le 80$). We identified \emph{synthetic overfitting} as a critical failure mode where aggressive oversampling degrades classifier performance below an unaugmented baseline. We also empirically demonstrated that Fréchet Inception Distance (FID) does not reliably correlate with downstream classifier utility in this regime. To address these issues, we proposed PCA-SMOTE, an algorithm that restricts SMOTE interpolation to the intrinsic low-dimensional subspace of the minority class. Coupled with an optimal target generation heuristic, PCA-SMOTE successfully mitigated synthetic overfitting and achieved statistically significant performance improvements on both MNIST and CIFAR-10. Future work will explore non-linear dimensionality reduction (such as UMAP \citep{mcinnes2018umap}) within the latent space prior to interpolation.
 
 %% ===========================================================================
+%%  DECLARATION OF GENERATIVE AI USE
+%% ===========================================================================
+\section*{Declaration of Generative AI and AI-assisted Technologies in the Writing Process}
+During the preparation of this work, the authors used generative AI tools (Claude, Gemini) to assist with drafting and editing the manuscript text. All experimental design, implementation, data collection, analysis, and scientific conclusions are the sole work and responsibility of the authors. The authors reviewed and edited all AI-generated content and take full responsibility for the content of the publication.
+
+%% ===========================================================================
 %%  REFERENCES
 %% ===========================================================================
 
