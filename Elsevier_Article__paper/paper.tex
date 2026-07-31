@@ -99,47 +99,29 @@ latent space \sep synthetic data \sep image classification
 %% ===========================================================================
 \section{Introduction}
 \label{sec:intro}
+Deep convolutional neural networks achieve state-of-the-art performance on image classification tasks when trained on massive, perfectly balanced datasets. In real-world applications, however, data is often heavily skewed, with majority classes dominating the dataset and critical minority classes represented by only a handful of samples. This class imbalance biases the classifier towards the majority distribution, severely degrading its ability to detect the minority class. 
 
-%% TODO: Write introduction here
-%% Guidance:
-%%   Paragraph 1: The class imbalance problem in image classification. Why it matters.
-%%   Paragraph 2: Overview of oversampling solutions (pixel SMOTE -> deep methods like DeepSMOTE).
-%%   Paragraph 3: The unexplored failure mode -- extreme minority (n<=80). What happens?
-%%   Paragraph 4: Our findings (synthetic overfitting, FID paradox).
-%%   Paragraph 5: Our proposed fix (PCA-SMOTE + optimal target count) and what we prove.
-%%   Paragraph 6: Paper organization.
+To address this, oversampling techniques generate synthetic examples for the minority class. While SMOTE \citep{chawla2002} is widely successful for tabular data, linear interpolation in pixel space fails to generate semantically meaningful images. Deep latent-space oversampling methods, notably DeepSMOTE \citep{dablain2021}, solve this by training an autoencoder to compress images into a lower-dimensional latent space, applying SMOTE to the latent vectors, and decoding them back into images. 
 
-\textbf{[SECTION DRAFT PENDING]}
+While these methods show promise for moderate imbalance ratios, their behaviour under \emph{extreme} class imbalance (where the minority class contains $n \le 80$ samples) remains largely unexplored. In this paper, we reproduce the DeepSMOTE architecture and evaluate it on extreme imbalance configurations of MNIST and CIFAR-10. We identify a critical failure mode we term \emph{synthetic overfitting}: when a minority class is aggressively oversampled to match the majority count, the classifier learns a noisy, artificially constructed manifold that degrades minority-class accuracy below that of an unaugmented baseline. Furthermore, we empirically demonstrate a decoupling between generative image quality (Fréchet Inception Distance, FID \citep{heusel2017}) and downstream classifier utility, proving that realistic synthetic images do not guarantee better classifiers.
+
+To resolve these failures, we propose \textbf{PCA-SMOTE}. By projecting the extreme minority class into a constrained principal component subspace before applying SMOTE, we prevent interpolation through empty, high-dimensional noise. Combined with a newly proposed heuristic for selecting the optimal synthetic target count, PCA-SMOTE achieves statistically significant accuracy improvements over standard latent oversampling methods.
 
 %% ===========================================================================
 %%  2. RELATED WORK
 %% ===========================================================================
 \section{Related Work}
 \label{sec:related}
+Oversampling for imbalanced data was popularized by SMOTE \citep{chawla2002}, which interpolates between a sample and its $k$-nearest neighbors. Because raw pixel interpolation yields blurry, ghosting artifacts, subsequent works shifted to deep generative models. Generative Adversarial Networks (GANs) have been adapted for this purpose (e.g., BAGAN, GAMO), but they are notoriously difficult to train on highly imbalanced datasets due to mode collapse.
 
-%% TODO: Write related work here
-%% Key papers to cite:
-%%   - Original SMOTE (Chawla 2002)
-%%   - DeepSMOTE (Dablain 2021)
-%%   - BAGAN, GAMO (GAN-based oversampling)
-%%   - FID paper (Heusel 2017)
-%%   - Class-imbalance surveys (He & Garcia 2009; Branco 2016)
-
-\textbf{[SECTION DRAFT PENDING]}
+Latent-space oversampling methods bypass GAN instability by utilizing deterministic autoencoders. DeepSMOTE \citep{dablain2021} trains a DCGAN-based autoencoder with a specialized penalty loss to cluster intra-class features, allowing standard SMOTE to be applied in the latent space. While the original authors tested DeepSMOTE on substantial imbalance ratios (e.g., 400:1), their absolute minority class counts remained relatively large (e.g., $n > 200$). Our work uniquely targets the \emph{extreme} minority regime ($n \le 80$), where the latent manifold assumption breaks down.
 
 %% ===========================================================================
 %%  3. BACKGROUND: DeepSMOTE
 %% ===========================================================================
 \section{Background: DeepSMOTE}
 \label{sec:background}
-
-%% TODO: Brief, precise description of DeepSMOTE.
-%%   - Encoder/Decoder architecture (DCGAN-based)
-%%   - Training: reconstruction loss + penalty (cyclic permutation trick)
-%%   - Generation: SMOTE in latent space (k=5 neighbors, gap in [0,1])
-%%   - Paper's claim: robust to extreme imbalance up to 400:1
-
-\textbf{[SECTION DRAFT PENDING]}
+DeepSMOTE \citep{dablain2021} consists of a three-phase pipeline. First, an encoder-decoder architecture is trained on the imbalanced dataset. The network uses a reconstruction loss alongside a cyclic permutation penalty term that forces the embeddings of samples from the same class closer together. Second, the trained encoder projects the minority class images into a high-dimensional continuous latent space (e.g., $d=600$). For each minority latent vector, standard SMOTE selects a neighbor from its $k=5$ nearest neighbors and generates a synthetic vector via linear interpolation with a gap coefficient $\lambda \sim \mathcal{U}(0, 1)$. Finally, these synthetic latent vectors are passed through the frozen decoder to generate synthetic minority images, which are combined with the real data to train a classifier.
 
 %% ===========================================================================
 %%  4. FAILURE ANALYSIS: DIAGNOSING DEEPSMOTE
@@ -323,14 +305,16 @@ highly-imbalanced latent manifolds.
 %% ===========================================================================
 \section{Discussion}
 \label{sec:discussion}
-\textbf{[SECTION DRAFT PENDING]}
+The failure of standard latent interpolation under extreme imbalance highlights a flaw in assuming Euclidean spaces smoothly map to semantic image manifolds. When a class has only 40 to 80 samples, a 600-dimensional encoded space is overwhelmingly sparse. Interpolating between two distant neighbors traverses regions of the latent space that do not correspond to the true data distribution. 
+
+PCA-SMOTE solves this by recognizing that the \emph{intrinsic} dimensionality of a class's structural variation is much lower than the ambient dimension of the autoencoder's bottleneck. By projecting into the top principal components, we discard the empty ambient dimensions that cause noisy generation. Furthermore, our discovery that the optimal target count is merely $5\times$ the real sample count challenges the longstanding oversampling heuristic of perfectly balancing class sizes, suggesting that generative methods should prioritize sample diversity over absolute class parity.
 
 %% ===========================================================================
 %%  8. CONCLUSION
 %% ===========================================================================
 \section{Conclusion}
 \label{sec:conclusion}
-\textbf{[SECTION DRAFT PENDING]}
+In this paper, we evaluated deep latent-space oversampling techniques under conditions of extreme class imbalance ($n \le 80$). We identified \emph{synthetic overfitting} as a critical failure mode where aggressive oversampling degrades classifier performance below an unaugmented baseline. We also empirically demonstrated that Fréchet Inception Distance (FID) does not reliably correlate with downstream classifier utility in this regime. To address these issues, we proposed PCA-SMOTE, an algorithm that restricts SMOTE interpolation to the intrinsic low-dimensional subspace of the minority class. Coupled with an optimal target generation heuristic, PCA-SMOTE successfully mitigated synthetic overfitting and achieved statistically significant performance improvements on both MNIST and CIFAR-10. Future work will explore non-linear dimensionality reduction (such as UMAP) within the latent space prior to interpolation.
 
 %% ===========================================================================
 %%  REFERENCES
