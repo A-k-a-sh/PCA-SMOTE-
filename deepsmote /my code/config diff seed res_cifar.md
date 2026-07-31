@@ -21,6 +21,8 @@ run_A_s10 = {
     'majority_nn_ratio': 0.820,
     'fid': 146.77,
     'lpips': 0.1731,
+    'tsne_cifar': "./config tsne fig cifar/cifar_configA_seed10.png",
+    
 }
 
 # Config A, Seed 20
@@ -39,6 +41,7 @@ run_A_s20 = {
     'majority_nn_ratio': 0.842,
     'fid': 150.10,
     'lpips': 0.1729,
+    'tsne_cifar': "./config tsne fig cifar/cifar_configA_seed20.png",
 }
 
 # Config A, Seed 60
@@ -57,6 +60,7 @@ run_A_s60 = {
     'majority_nn_ratio': 0.832,
     'fid': 147.91,
     'lpips': 0.1707,
+    'tsne_cifar': "./config tsne fig cifar/cifar_configA_seed60.png",
 }
 ```
 
@@ -81,6 +85,7 @@ run_B_s10 = {
     'majority_nn_ratio': 0.803,
     'fid': 175.07,
     'lpips': 0.2174,
+    'tsne_cifar': "./config tsne fig cifar/cifar_configB_seed10.png",
 }
 
 # Config B, Seed 20
@@ -99,6 +104,7 @@ run_B_s20 = {
     'majority_nn_ratio': 0.833,
     'fid': 170.41,
     'lpips': 0.2127,
+    'tsne_cifar': "./config tsne fig cifar/cifar_configB_seed20.png",
 }
 
 # Config B, Seed 60
@@ -117,6 +123,7 @@ run_B_s60 = {
     'majority_nn_ratio': 0.835,
     'fid': 178.31,
     'lpips': 0.2137,
+    'tsne_cifar': "./config tsne fig cifar/cifar_configB_seed60.png",
 }
 ```
 
