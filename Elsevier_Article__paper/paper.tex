@@ -36,15 +36,19 @@
        Oversampling and a Principled Correction for Extreme Class Imbalance}
 
 %% TODO: Fill in your real name and affiliation before submission
-\author[1]{Your Name\corref{cor1}}
-\ead{your.email@university.edu}
+\author[1]{Shahad Abir\corref{cor1}}
+\ead{abirakash1987@gmail.com}
 \cortext[cor1]{Corresponding author}
 
-\affiliation[1]{organization={Department of Computer Science},
-               addressline={Your University Address},
-               city={City},
-               postcode={Postcode},
-               country={Country}}
+%% TODO: Replace with the actual names of your co-authors
+\author[1]{Second Author}
+\author[1]{Third Author}
+\author[1]{Fourth Author}
+
+\affiliation[1]{organization={Chittagong University of Engineering and Technology},
+               city={Chittagong},
+               postcode={4000},
+               country={Bangladesh}}
 
 %% ----- Abstract ------------------------------------------------------------
 \begin{abstract}
@@ -104,7 +108,7 @@ latent space \sep synthetic data \sep image classification
 %% ===========================================================================
 \section{Introduction}
 \label{sec:intro}
-Deep convolutional neural networks achieve state-of-the-art performance on image classification tasks when trained on massive, perfectly balanced datasets. In real-world applications, however, data is often heavily skewed, with majority classes dominating the dataset and critical minority classes represented by only a handful of samples. This class imbalance biases the classifier towards the majority distribution, severely degrading its ability to detect the minority class. 
+Deep convolutional neural networks achieve state-of-the-art performance on image classification tasks when trained on massive, perfectly balanced datasets. In real-world applications, however, data is often heavily skewed, with majority classes dominating the dataset and critical minority classes represented by only a handful of samples. This class imbalance biases the classifier towards the majority distribution, severely degrading its ability to detect the minority class \citep{he2009learning,johnson2019survey}. 
 
 To address this, oversampling techniques generate synthetic examples for the minority class. While SMOTE \citep{chawla2002smote} is widely successful for tabular data, linear interpolation in pixel space fails to generate semantically meaningful images. Deep latent-space oversampling methods, notably DeepSMOTE \citep{dablain2022deepsmote}, solve this by training an autoencoder to compress images into a lower-dimensional latent space, applying SMOTE to the latent vectors, and decoding them back into images. 
 
@@ -119,9 +123,9 @@ To facilitate full reproducibility of our failure analysis and proposed methodol
 %% ===========================================================================
 \section{Related Work}
 \label{sec:related}
-Oversampling for imbalanced data was popularized by SMOTE \citep{chawla2002smote}, which interpolates between a sample and its $k$-nearest neighbors. Because raw pixel interpolation yields blurry, ghosting artifacts, subsequent works shifted to deep generative models. Generative Adversarial Networks (GANs) have been adapted for this purpose (e.g., BAGAN \citep{mariani2018bagan}, GAMO \citep{mullick2019gamo}), but they are notoriously difficult to train on highly imbalanced datasets due to mode collapse.
+Oversampling for imbalanced data was popularized by SMOTE \citep{chawla2002smote}, which interpolates between a sample and its $k$-nearest neighbors. Because raw pixel interpolation yields blurry, ghosting artifacts, subsequent works shifted to deep generative models. Generative Adversarial Networks (GANs) have been adapted for this purpose (e.g., BAGAN \citep{mariani2018bagan}, GAMO \citep{mullick2019gamo}), but they are notoriously difficult to train on highly imbalanced datasets due to mode collapse. Variants of SMOTE (e.g., Borderline-SMOTE \citep{han2005borderline}, ADASYN \citep{he2008adasyn}, SMOTEBoost \citep{chawla2003smoteboost}) attempted to improve tabular generation boundaries but still fail in high-dimensional image spaces.
 
-Latent-space oversampling methods bypass GAN instability by utilizing deterministic autoencoders. DeepSMOTE \citep{dablain2022deepsmote} trains a DCGAN-based autoencoder with a specialized penalty loss to cluster intra-class features, allowing standard SMOTE to be applied in the latent space. While the original authors tested DeepSMOTE on substantial imbalance ratios (e.g., 400:1), their absolute minority class counts remained relatively large (e.g., $n > 200$). Our work uniquely targets the \emph{extreme} minority regime ($n \le 80$), where the latent manifold assumption breaks down.
+Latent-space oversampling methods bypass GAN instability by utilizing deterministic autoencoders. DeepSMOTE \citep{dablain2022deepsmote} trains a DCGAN-based autoencoder \citep{radford2015unsupervised} with a specialized penalty loss to cluster intra-class features, allowing standard SMOTE to be applied in the latent space. While the original authors tested DeepSMOTE on substantial imbalance ratios (e.g., 400:1), their absolute minority class counts remained relatively large (e.g., $n > 200$). Our work uniquely targets the \emph{extreme} minority regime ($n \le 80$), where the latent manifold assumption breaks down.
 
 %% ===========================================================================
 %%  3. BACKGROUND: DeepSMOTE
@@ -138,7 +142,7 @@ DeepSMOTE \citep{dablain2022deepsmote} consists of a three-phase pipeline. First
 
 \subsection{Experimental Setup}
 \label{subsec:setup}
-To analyze the behaviour of latent-space oversampling under extreme imbalance, we reconstruct the DeepSMOTE \citep{dablain2022deepsmote} pipeline on two benchmark datasets: MNIST and CIFAR-10. For MNIST, we establish a 100:1 imbalance ratio, reducing the minority class (Digit 9) to $n=40$ samples. For CIFAR-10, we reduce the ``Airplane'' class to $n=80$ samples (a 25:1 ratio against the majority class of $n=2000$). We train the identical autoencoder architecture specified by the original authors (a DCGAN-based topology) until convergence. Figure \ref{fig:tsne} visualizes the resulting 600-dimensional latent spaces projected via t-SNE \citep{vandermaaten2008tsne}. While the majority classes form dense, well-defined clusters, the extreme minority classes are sparse and fractured, setting the stage for our failure analysis.
+To analyze the behaviour of latent-space oversampling under extreme imbalance, we reconstruct the DeepSMOTE \citep{dablain2022deepsmote} pipeline on two benchmark datasets: MNIST \citep{lecun1998gradient} and CIFAR-10 \citep{krizhevsky2009learning}. For MNIST, we establish a 100:1 imbalance ratio, reducing the minority class (Digit 9) to $n=40$ samples. For CIFAR-10, we reduce the ``Airplane'' class to $n=80$ samples (a 25:1 ratio against the majority class of $n=2000$). We train the identical autoencoder architecture specified by the original authors (a DCGAN-based topology \citep{radford2015unsupervised}) until convergence. Figure \ref{fig:tsne} visualizes the resulting 600-dimensional latent spaces projected via t-SNE \citep{vandermaaten2008tsne}. While the majority classes form dense, well-defined clusters, the extreme minority classes are sparse and fractured, setting the stage for our failure analysis.
 
 \begin{figure}[htbp]
     \centering
@@ -241,9 +245,9 @@ Instead, our empirical results across both MNIST and CIFAR-10 suggest a new heur
 
 \subsection{Datasets and Implementation Details}
 \label{subsec:impl}
-We evaluate our approach on two image classification benchmarks: MNIST and CIFAR-10. While previous works evaluated DeepSMOTE under moderate absolute minority counts (e.g., $n \ge 400$), we establish an extreme imbalance regime to stress-test the latent manifold. For MNIST, we use a 100:1 imbalance ratio, reducing Class 9 to $n=40$ samples. For CIFAR-10, we establish a 25:1 ratio, reducing the Airplane class to $n=80$ samples. 
+We evaluate our approach on two image classification benchmarks: MNIST \citep{lecun1998gradient} and CIFAR-10 \citep{krizhevsky2009learning}. While previous works evaluated DeepSMOTE under moderate absolute minority counts (e.g., $n \ge 400$), we establish an extreme imbalance regime to stress-test the latent manifold. For MNIST, we use a 100:1 imbalance ratio, reducing Class 9 to $n=40$ samples. For CIFAR-10, we establish a 25:1 ratio, reducing the Airplane class to $n=80$ samples. 
 
-For downstream classification, we intentionally train a lightweight Convolutional Neural Network (SmallCNN) from scratch. This isolates the direct impact of the synthetic oversampling distribution and avoids confounding variables introduced by heavy architectures (like ResNet-18) or ImageNet pre-training priors. Because global metrics like overall accuracy are insensitive to extreme minority classes, we report the absolute classification accuracy of the target minority class. All experiments are independently repeated across three random seeds (10, 20, and 60) to ensure statistical robustness.
+For downstream classification, we intentionally train a lightweight Convolutional Neural Network (SmallCNN) \citep{lecun1989backpropagation} from scratch using the Adam optimizer \citep{kingma2014adam}. This isolates the direct impact of the synthetic oversampling distribution and avoids confounding variables introduced by heavy architectures (like ResNet-18 \citep{krizhevsky2012imagenet}) or ImageNet pre-training priors. Because global metrics like overall accuracy are insensitive to extreme minority classes, we report the absolute classification accuracy of the target minority class. All experiments are independently repeated across three random seeds (10, 20, and 60) to ensure statistical robustness.
 
 \subsection{MNIST Results}
 \label{subsec:mnist}
@@ -329,7 +333,7 @@ PCA-SMOTE solves this by recognizing that the \emph{intrinsic} dimensionality of
 %% ===========================================================================
 \section{Conclusion}
 \label{sec:conclusion}
-In this paper, we evaluated deep latent-space oversampling techniques under conditions of extreme class imbalance ($n \le 80$). We identified \emph{synthetic overfitting} as a critical failure mode where aggressive oversampling degrades classifier performance below an unaugmented baseline. We also empirically demonstrated that Fréchet Inception Distance (FID) does not reliably correlate with downstream classifier utility in this regime. To address these issues, we proposed PCA-SMOTE, an algorithm that restricts SMOTE interpolation to the intrinsic low-dimensional subspace of the minority class. Coupled with an optimal target generation heuristic, PCA-SMOTE successfully mitigated synthetic overfitting and achieved statistically significant performance improvements on both MNIST and CIFAR-10. Future work will explore non-linear dimensionality reduction (such as UMAP) within the latent space prior to interpolation.
+In this paper, we evaluated deep latent-space oversampling techniques under conditions of extreme class imbalance ($n \le 80$). We identified \emph{synthetic overfitting} as a critical failure mode where aggressive oversampling degrades classifier performance below an unaugmented baseline. We also empirically demonstrated that Fréchet Inception Distance (FID) does not reliably correlate with downstream classifier utility in this regime. To address these issues, we proposed PCA-SMOTE, an algorithm that restricts SMOTE interpolation to the intrinsic low-dimensional subspace of the minority class. Coupled with an optimal target generation heuristic, PCA-SMOTE successfully mitigated synthetic overfitting and achieved statistically significant performance improvements on both MNIST and CIFAR-10. Future work will explore non-linear dimensionality reduction (such as UMAP \citep{mcinnes2018umap}) within the latent space prior to interpolation.
 
 %% ===========================================================================
 %%  REFERENCES
