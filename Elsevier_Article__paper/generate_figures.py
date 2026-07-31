@@ -318,8 +318,71 @@ print(f"Saved: {out}")
 plt.close()
 
 
+# =============================================================================
+# FIGURE 5: Nearest-Neighbour Distance Ratio (Latent Space Sparsity Diagnostic)
+# =============================================================================
+# NN ratio = mean(kNN distance) / mean(vector norm)
+# Ratio → 1.0  means nearest neighbours are as far as random points → no structure
+# Ratio < 0.9  means coherent local clusters exist
+
+# Data from multi-seed experiments (deepsmote so far.md Section 8)
+classes_mnist   = ["Class 0\n(n=4000)", "Class 1\n(n=2000)", "Class 7\n(n=100)",
+                   "Class 8\n(n=60)",   "Class 9\n(n=40, minority)"]
+nn_ratio_mnist  = [0.846, 0.853, 0.901, 0.940, 0.989]   # approx from seed 10 output
+
+# CIFAR — both configs, mean over 3 seeds
+classes_cifar   = ["Ship\n(n=2000,\nmajority)", "Bird\n(n=600)", "Dog\n(n=1000)",
+                   "Dog\n(n=80,\nConfig A\nminority)", "Airplane\n(n=80,\nConfig B\nminority)"]
+nn_ratio_cifar  = [0.824,  0.870, 0.861, 0.986, 0.956]   # means from deepsmote so far.md
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
+
+THRESHOLD = 0.95  # above this → insufficient density for SMOTE
+
+def plot_nn_ratio(ax, classes, ratios, title):
+    colors = [RED if r >= THRESHOLD else BLUE for r in ratios]
+    bars = ax.bar(classes, ratios, color=colors, alpha=0.85, edgecolor="white", width=0.55)
+    ax.axhline(THRESHOLD, color="black", linestyle="--", linewidth=1.5,
+               label=f"Threshold = {THRESHOLD} (SMOTE unreliable above)")
+    ax.axhline(1.0, color="#999", linestyle=":", linewidth=1.2, label="Ratio = 1.0 (fully random)")
+    ax.set_ylim(0.78, 1.04)
+    ax.set_ylabel("NN Distance Ratio\n(higher → more sparse, less structured)")
+    ax.set_title(title)
+    ax.legend(frameon=False, fontsize=9.5, loc="lower right")
+    for sp in ["top", "right"]: ax.spines[sp].set_visible(False)
+    # Annotate the problem bar
+    for i, (cls, r) in enumerate(zip(classes, ratios)):
+        if r >= THRESHOLD:
+            ax.text(i, r + 0.003, f"{r:.3f}", ha="center", va="bottom",
+                    fontsize=9, color=RED, fontweight="bold")
+        else:
+            ax.text(i, r + 0.003, f"{r:.3f}", ha="center", va="bottom",
+                    fontsize=9, color="#333")
+
+plot_nn_ratio(axes[0], classes_mnist,
+              nn_ratio_mnist,
+              "(a) MNIST — NN ratio by class\n(sorted by n)")
+plot_nn_ratio(axes[1], classes_cifar,
+              nn_ratio_cifar,
+              "(b) CIFAR-10 — NN ratio by class\n(Config A & B minority highlighted)")
+
+# Shared annotation
+fig.text(0.5, -0.02,
+         "Red bars exceed the NN ratio threshold (≥0.95), indicating insufficient\n"
+         "latent density for meaningful SMOTE interpolation.",
+         ha="center", fontsize=10.5, color="#333")
+
+plt.tight_layout()
+out = os.path.join(OUTDIR, "fig5_nn_ratio.pdf")
+plt.savefig(out)
+plt.savefig(out.replace(".pdf", ".png"))
+print(f"Saved: {out}")
+plt.close()
+
+
 print("\n✅ All figures generated successfully!")
 print(f"   Output folder: {OUTDIR}")
 print("   Files:")
 for f in sorted(os.listdir(OUTDIR)):
-    print(f"     {f}")
+    if os.path.isfile(os.path.join(OUTDIR, f)):
+        print(f"     {f}")
