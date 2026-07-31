@@ -40,10 +40,14 @@
 \ead{abirakash1987@gmail.com}
 \cortext[cor1]{Corresponding author}
 
-%% TODO: Replace with the actual names of your co-authors
-\author[1]{Second Author}
-\author[1]{Third Author}
-\author[1]{Fourth Author}
+\author[1]{Abdullah Mohammed Asif}
+\ead{u2104060@student.cuet.ac.bd}
+
+\author[1]{Shahriar Khaled Fahim}
+\ead{fahim.shahriar.1014@gmail.com}
+
+\author[1]{Md Piash Islam}
+\ead{u2104051@student.cuet.ac.bd}
 
 \affiliation[1]{organization={Chittagong University of Engineering and Technology},
                city={Chittagong},
@@ -197,7 +201,7 @@ Figure \ref{fig:nn_ratio} shows this diagnostic for both datasets. The extreme m
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{fig5_nn_ratio}
+    \includegraphics[width=\linewidth]{figures/fig5_nnRatio.png}
     \caption{Nearest-Neighbour (NN) distance ratio diagnostic. The extreme minority classes (red bars) exhibit high sparsity (ratio $\ge 0.95$), indicating insufficient local structure for reliable 600-dimensional SMOTE interpolation.}
     \label{fig:nn_ratio}
 \end{figure}
@@ -222,11 +226,11 @@ To achieve this, we propose \textbf{PCA-SMOTE}. Instead of interpolating directl
     $z'_{syn} = z'_i + \lambda (z'_j - z'_i)$ where $\lambda \sim \mathcal{U}(0, 1)$.
     \item \textbf{Inverse Projection:} The synthetic vectors $Z'_{syn}$ are projected back into the original 600-dimensional space using the inverse PCA transform, yielding $Z_{syn} \in \mathbb{R}^{m \times d}$.
     \item \textbf{Decoding:} Finally, $Z_{syn}$ is passed through the pre-trained decoder to generate the final synthetic images.
-\end{enumerate}
+\end{enumerate}  
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{fig4_pcasmote_pipeline}
+    \includegraphics[width=\linewidth]{figures/fig4_pcasmote_pipeline.png}
     \caption{The PCA-SMOTE pipeline. By restricting SMOTE interpolation to the top-$k$ principal components (intrinsic subspace), we eliminate high-dimensional noise and generate structurally coherent samples.}
     \label{fig:pcasmote_pipeline}
 \end{figure}
